@@ -21,7 +21,7 @@ import { useRouter } from 'next/navigation';
 // }
 
 
-export default  function page() {
+export default  function Page() {
   // const user = await fetchUser();
 
   const { user, isLoaded } = useUser();
