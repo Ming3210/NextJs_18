@@ -22,6 +22,8 @@ import { useRouter } from 'next/navigation';
 
 
 export default  function Demo() {
+  const { signOut } = useAuth(); 
+  const router = useRouter(); 
   // const user = await fetchUser();
 
   const { user, isLoaded } = useUser();
@@ -31,8 +33,6 @@ export default  function Demo() {
   if (!user) {
     return <div>No user</div>
   }
-  const { signOut } = useAuth(); 
-  const router = useRouter(); 
 
   const handleSignOut = async () => {
     
