@@ -1,56 +1,44 @@
-'use client'
+'use client';
+
 import React from 'react';
-import {  SignOutButton, SignInButton, useAuth, useUser } from '@clerk/nextjs';
-// import { currentUser } from '@clerk/nextjs/server';
+import { SignInButton, useAuth, useUser } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
 
-// async function fetchUser() {
-//   try {
-//     const userData = await currentUser();
-//     if (userData) {
-//       return {
-//         firstName: userData.firstName,
-//         emailAddress: userData.emailAddresses[0]
-//       };
-//     }
-//     return null;
-//   } catch (error) {
-//     console.error('Failed to fetch user data:', error);
-//     return null;
-//   }
-// }
-
-
-export default  function Demo() {
+export default function Demo() {
   const { signOut } = useAuth(); 
   const router = useRouter(); 
-  // const user = await fetchUser();
-
   const { user, isLoaded } = useUser();
-  // console.log(user);
-  
 
+  // Show a loading state while user data is being fetched
+  if (!isLoaded) {
+    return <div>Loading...</div>;
+  }
+
+  // If there is no user, show a message or sign-in button
   if (!user) {
-    return <div>No user</div>
+    return (
+      <div>
+        <p>No user</p>
+        <SignInButton>Đăng nhập</SignInButton>
+      </div>
+    );
   }
 
+  // Handler for sign out
   const handleSignOut = async () => {
-    
-      await signOut(); 
-      router.push('/sign-in'); 
-  
-  }
+    try {
+      await signOut();
+      router.push('/sign-in');
+    } catch (error) {
+      console.error('Error signing out:', error);
+    }
+  };
 
- 
-
+  // Render user info and sign out button
   return (
     <div>
       <h1>Trang chủ</h1>
-      {user ? (
-        <button onClick={handleSignOut}>Đăng xuất</button>
-      ) : (
-        <SignInButton>Đăng nhập</SignInButton>
-      )}
+      <button onClick={handleSignOut}>Đăng xuất</button>
     </div>
   );
 }
